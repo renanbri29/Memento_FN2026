@@ -1,108 +1,88 @@
+
+import { supabase } from './supabase.js';
+
 // ======================================
 // PEGAR O TEMPO DA PARTIDA
 // ======================================
 
 const tempo = Number(
-    localStorage.getItem("tempoUtilizado") || 0
+    localStorage.getItem('tempoUtilizado') || 0
 );
 
-
 // ======================================
-// CONVERTER PARA MM:SS
+// EXIBIR O TEMPO FINAL
 // ======================================
 
 const minutos = Math.floor(tempo / 60);
-
 const segundos = tempo % 60;
 
-
 const tempoFormatado =
-    String(minutos).padStart(2, "0") +
-    ":" +
-    String(segundos).padStart(2, "0");
+    String(minutos).padStart(2, '0') +
+    ':' +
+    String(segundos).padStart(2, '0');
 
-
-// Mostrar na tela
-
-document.getElementById(
-    "tempo-final"
-).textContent = tempoFormatado;
-
-
+document.getElementById('tempo-final').textContent =
+    tempoFormatado;
 
 // ======================================
-// BOTÃO SALVAR
+// BOTÃO SALVAR NO SUPABASE
 // ======================================
 
-document.getElementById(
-    "salvar"
-).addEventListener("click", function () {
+const botaoSalvar = document.querySelector('#salvar');
 
+botaoSalvar.addEventListener('click', async () => {
+    const jogador1 = document
+        .querySelector('#jogador1')
+        .value.trim();
 
-    const jogador1 =
-        document.getElementById(
-            "jogador1"
-        ).value.trim();
+    const jogador2 = document
+        .querySelector('#jogador2')
+        .value.trim();
 
-
-    const jogador2 =
-        document.getElementById(
-            "jogador2"
-        ).value.trim();
-
-
-    const mensagem =
-        document.getElementById(
-            "mensagem"
-        );
-
-
-
-    // ==================================
-    // VERIFICAR NOMES
-    // ==================================
-
-    if (jogador1 === "" || jogador2 === "") {
-
-        mensagem.textContent =
-            "Digite o nome dos dois jogadores.";
-
+    if (!jogador1 || !jogador2) {
+        alert('Digite o nome dos dois jogadores.');
         return;
     }
 
-
-
-    // ==================================
-   fetch("php/salvar_pontuacao.php", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body:
-        "jogador1=" + encodeURIComponent(jogador1) +
-        "&jogador2=" + encodeURIComponent(jogador2) +
-        "&tempo=" + encodeURIComponent(tempo)
-})
-.then(response => response.json())
-.then(data => {
-
-    if (data.sucesso) {
-
-        window.location.href = "ranking.html";
-
-    } else {
-
-        mensagem.textContent =
-            data.mensagem;
+    if (
+        !Number.isSafeInteger(tempo) ||
+        tempo < 0
+    ) {
+        alert('Tempo inválido.');
+        return;
     }
 
-})
-.catch(error => {
+    botaoSalvar.disabled = true;
 
-    console.error(error);
+    try {
+        const { error } = await supabase
+            .from('resultados')
+            .insert({
+                jogador1: jogador1,
+                jogador2: jogador2,
+                tempo_segundos: tempo
+            });
 
-    mensagem.textContent =
-        "Erro ao conectar com o servidor.";
-});
+        if (error) {
+            throw error;
+        }
 
+        alert('Resultado salvo no ranking online!');
+
+        window.location.href = 'ranking.html';
+
+    } catch (erro) {
+        console.error(
+            'Erro ao salvar resultado:',
+            erro
+        );
+
+        alert(
+            'Não foi possível salvar o resultado. ' +
+            'Verifique a conexão e tente novamente.'
+        );
+
+    } finally {
+        botaoSalvar.disabled = false;
+    }
 });
