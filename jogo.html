@@ -1,92 +1,61 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEMENTO — Jogo</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
+    <main class="screen game-screen">
 
-    <main class="screen">
+        <h1 class="game-title">MEMENTO</h1>
 
-        <h1 class="game-title">
-            MEMENTO
-        </h1>
+        <!-- PROGRESSO DAS FASES -->
+        <section class="phase-progress" aria-label="Progresso do jogo">
+            <div class="phase-heading">
+                <span>PROGRESSO</span>
+                <strong id="fase-destaque">FASE 1/5</strong>
+            </div>
 
+            <div class="phase-track" id="progresso-fases">
+                <span class="phase-segment active"></span>
+                <span class="phase-segment"></span>
+                <span class="phase-segment"></span>
+                <span class="phase-segment"></span>
+                <span class="phase-segment"></span>
+            </div>
+        </section>
 
-        <!-- DISPLAY -->
-
-        <div
-            id="numero-display"
-            class="display"
-        >
-            1
+        <!-- FEEDBACK VISUAL -->
+        <div id="feedback-jogo"
+             class="game-feedback"
+             role="status"
+             aria-live="polite">
+            PREPARE-SE
         </div>
 
+        <!-- DISPLAY PRINCIPAL -->
+        <div id="numero-display" class="display">1</div>
 
         <!-- BOTÕES -->
-
         <div class="buttons">
-
-            <button class="number-button">
-                1
-            </button>
-
-            <button class="number-button">
-                2
-            </button>
-
-            <button class="number-button">
-                3
-            </button>
-
-            <button class="number-button">
-                4
-            </button>
-
+            <button class="number-button" type="button">1</button>
+            <button class="number-button" type="button">2</button>
+            <button class="number-button" type="button">3</button>
+            <button class="number-button" type="button">4</button>
         </div>
 
-
-        <!-- INFORMAÇÕES DO JOGO -->
-
+        <!-- INFORMAÇÕES -->
         <div class="game-info">
-
-            <span id="fase">
-                Fase: 1/5
-            </span>
-
-            <span id="timer">
-                Tempo: 01:30
-            </span>
-
-            <span id="erros">
-                Erros: 0/3
-            </span>
-
+            <span id="fase">Fase: 1/5</span>
+            <span id="timer">Tempo: 01:30</span>
+            <span id="erros">Erros: 0/3</span>
         </div>
-
 
     </main>
 
-
-    <!-- JAVASCRIPT -->
-
     <script src="js/jogo.js"></script>
-
 </body>
-
 </html>

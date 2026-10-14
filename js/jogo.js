@@ -1,16 +1,22 @@
-// ===============================
-// CONFIGURAÇÕES DO JOGO
-// ===============================
+
+ // ===============================
+ // CONFIGURAÇÕES DO JOGO
+ // ===============================
 
 let faseAtual = 1;
 let erros = 0;
 let tempoRestante = 90;
 let timer = null;
-
 let historico = [];
-
 let numeroDisplay;
 let botoes;
+let feedback;
+let entradaBloqueada = false;
+let partidaEncerrada = false;
+let temporizadorFeedback = null;
+
+const TEMPO_FEEDBACK = 1000;
+
 
 // ===============================
 // SONS DO JOGO
@@ -32,19 +38,23 @@ function tocarSom(som) {
 // ===============================
 
 function iniciarJogo() {
-
     faseAtual = 1;
     erros = 0;
     tempoRestante = 90;
     historico = [];
+    entradaBloqueada = false;
+    partidaEncerrada = false;
+
+    clearInterval(timer);
+    clearTimeout(temporizadorFeedback);
 
     numeroDisplay = document.getElementById("numero-display");
     botoes = document.querySelectorAll(".number-button");
+    feedback = document.getElementById("feedback-jogo");
 
     atualizarTela();
-
     sortearBotoes();
-
+    mostrarFeedback("MEMORIZE O NÚMERO", "neutro");
     iniciarTimer();
 }
 
@@ -54,22 +64,20 @@ function iniciarJogo() {
 // ===============================
 
 function iniciarTimer() {
-
     clearInterval(timer);
 
     timer = setInterval(() => {
+        if (partidaEncerrada) return;
 
         tempoRestante--;
-
         atualizarTimer();
 
         if (tempoRestante <= 0) {
-
             clearInterval(timer);
-
+            partidaEncerrada = true;
+            bloquearBotoes(true);
             derrota("Tempo esgotado!");
         }
-
     }, 1000);
 }
 
@@ -79,13 +87,11 @@ function iniciarTimer() {
 // ===============================
 
 function atualizarTimer() {
-
     const minutos = Math.floor(tempoRestante / 60);
     const segundos = tempoRestante % 60;
 
     const tempoFormatado =
-        String(minutos).padStart(2, "0") +
-        ":" +
+        String(minutos).padStart(2, "0") + ":" +
         String(segundos).padStart(2, "0");
 
     document.getElementById("timer").textContent =
@@ -98,30 +104,46 @@ function atualizarTimer() {
 // ===============================
 
 function sortearBotoes() {
-
-    let numeros = [1, 2, 3, 4];
+    const numeros = [1, 2, 3, 4];
 
     numeros.sort(() => Math.random() - 0.5);
 
     botoes.forEach((botao, indice) => {
-
         botao.textContent = numeros[indice];
-
         botao.dataset.numero = numeros[indice];
 
         botao.onclick = () => {
-
             clicarBotao(indice + 1, numeros[indice]);
-
         };
-
     });
 
-
-    // Sorteia o número do display
-    let display = Math.floor(Math.random() * 4) + 1;
-
+    const display = Math.floor(Math.random() * 4) + 1;
     numeroDisplay.textContent = display;
+}
+
+
+// ===============================
+// FEEDBACK VISUAL
+// ===============================
+
+function mostrarFeedback(mensagem, tipo) {
+    feedback.textContent = mensagem;
+    feedback.className = "game-feedback " + tipo;
+
+    // Reinicia a animação visual do painel
+    numeroDisplay.classList.remove("display-success", "display-error");
+
+    if (tipo === "acerto") {
+        numeroDisplay.classList.add("display-success");
+    } else if (tipo === "erro") {
+        numeroDisplay.classList.add("display-error");
+    }
+}
+
+function bloquearBotoes(bloquear) {
+    botoes.forEach(botao => {
+        botao.disabled = bloquear;
+    });
 }
 
 
@@ -130,6 +152,7 @@ function sortearBotoes() {
 // ===============================
 
 function clicarBotao(posicao, numero) {
+    if (entradaBloqueada || partidaEncerrada) return;
 
     const display = Number(numeroDisplay.textContent);
 
@@ -140,24 +163,27 @@ function clicarBotao(posicao, numero) {
         numero
     );
 
+    entradaBloqueada = true;
+    bloquearBotoes(true);
 
     if (correto) {
-
         tocarSom(somAcerto);
 
-        // Guarda a informação da fase
         historico.push({
             fase: faseAtual,
             posicao: posicao,
             numero: numero
         });
 
-        proximaFase();
+        mostrarFeedback("✓ FASE CONCLUÍDA!", "acerto");
+
+        temporizadorFeedback = setTimeout(() => {
+            if (partidaEncerrada) return;
+            proximaFase();
+        }, TEMPO_FEEDBACK);
 
     } else {
-
         erro();
-
     }
 }
 
@@ -168,17 +194,13 @@ function clicarBotao(posicao, numero) {
 
 function verificarResposta(fase, display, posicao, numero) {
 
-    // FASE 1
+    // FASE 1: display indica a posição correta
     if (fase === 1) {
-
-        // Display = posição
         return display === posicao;
     }
 
-
     // FASE 2
     if (fase === 2) {
-
         const respostas = {
             1: 4,
             2: 1,
@@ -189,31 +211,16 @@ function verificarResposta(fase, display, posicao, numero) {
         return numero === respostas[display];
     }
 
-
     // FASE 3
     if (fase === 3) {
-
-        if (display === 1) {
-            return posicao === 2;
-        }
-
-        if (display === 2) {
-            return numero === 4;
-        }
-
-        if (display === 3) {
-            return posicao === 4;
-        }
-
-        if (display === 4) {
-            return numero === 1;
-        }
+        if (display === 1) return posicao === 2;
+        if (display === 2) return numero === 4;
+        if (display === 3) return posicao === 4;
+        if (display === 4) return numero === 1;
     }
-
 
     // FASE 4
     if (fase === 4) {
-
         const referencias = {
             1: 1,
             2: 2,
@@ -221,20 +228,15 @@ function verificarResposta(fase, display, posicao, numero) {
             4: 1
         };
 
-        const faseReferencia = referencias[display];
+        const memoria = historico.find(
+            item => item.fase === referencias[display]
+        );
 
-        const memoria =
-            historico.find(
-                item => item.fase === faseReferencia
-            );
-
-        return posicao === memoria.posicao;
+        return Boolean(memoria) && posicao === memoria.posicao;
     }
-
 
     // FASE 5
     if (fase === 5) {
-
         const referencias = {
             1: 1,
             2: 3,
@@ -242,14 +244,11 @@ function verificarResposta(fase, display, posicao, numero) {
             4: 4
         };
 
-        const faseReferencia = referencias[display];
+        const memoria = historico.find(
+            item => item.fase === referencias[display]
+        );
 
-        const memoria =
-            historico.find(
-                item => item.fase === faseReferencia
-            );
-
-        return numero === memoria.numero;
+        return Boolean(memoria) && numero === memoria.numero;
     }
 
     return false;
@@ -261,29 +260,46 @@ function verificarResposta(fase, display, posicao, numero) {
 // ===============================
 
 function erro() {
-
     tocarSom(somErro);
 
     erros++;
-
     atualizarErros();
 
+    mostrarFeedback(
+        erros >= 3
+            ? "✕ ERRO FATAL — FIM DE JOGO"
+            : "✕ RESPOSTA INCORRETA!",
+        "erro"
+    );
+
     if (erros >= 3) {
-        derrota();
+        partidaEncerrada = true;
+        clearInterval(timer);
+
+        temporizadorFeedback = setTimeout(() => {
+            derrota();
+        }, TEMPO_FEEDBACK);
+
         return;
     }
 
-    // Volta para a Fase 1
-    faseAtual = 1;
+    temporizadorFeedback = setTimeout(() => {
+        if (partidaEncerrada) return;
 
-    // Apaga a memória das fases anteriores
-    historico = [];
+        faseAtual = 1;
+        historico = [];
 
-    // Sorteia novamente os botões
-    sortearBotoes();
+        atualizarTela();
+        sortearBotoes();
 
-    // Atualiza a tela
-    atualizarTela();
+        mostrarFeedback(
+            "↺ SEQUÊNCIA REINICIADA — FASE 1",
+            "reinicio"
+        );
+
+        entradaBloqueada = false;
+        bloquearBotoes(false);
+    }, TEMPO_FEEDBACK);
 }
 
 
@@ -292,32 +308,45 @@ function erro() {
 // ===============================
 
 function proximaFase() {
-
     if (faseAtual === 5) {
-
+        partidaEncerrada = true;
         clearInterval(timer);
-
         vitoria();
-
         return;
     }
 
     faseAtual++;
 
     atualizarTela();
-
     sortearBotoes();
+
+    mostrarFeedback(
+        "FASE " + faseAtual + " — CONTINUE!",
+        "neutro"
+    );
+
+    entradaBloqueada = false;
+    bloquearBotoes(false);
 }
 
 
 // ===============================
-// ATUALIZAR FASE
+// ATUALIZAR FASE E PROGRESSO
 // ===============================
 
 function atualizarTela() {
-
     document.getElementById("fase").textContent =
         "Fase: " + faseAtual + "/5";
+
+    document.getElementById("fase-destaque").textContent =
+        "FASE " + faseAtual + "/5";
+
+    const segmentos = document.querySelectorAll(".phase-segment");
+
+    segmentos.forEach((segmento, indice) => {
+        segmento.classList.toggle("active", indice < faseAtual);
+        segmento.classList.toggle("current", indice === faseAtual - 1);
+    });
 
     atualizarErros();
     atualizarTimer();
@@ -329,11 +358,7 @@ function atualizarTela() {
 // ===============================
 
 function atualizarErros() {
-
-    const elemento =
-        document.getElementById("erros");
-
-    elemento.textContent =
+    document.getElementById("erros").textContent =
         "Erros: " + erros + "/3";
 }
 
@@ -343,19 +368,11 @@ function atualizarErros() {
 // ===============================
 
 function vitoria() {
-
     tocarSom(somVitoria);
 
-    // Calcula quanto tempo foi usado
     const tempoUtilizado = 90 - tempoRestante;
 
-    // Guarda o tempo para a tela de vitória
-    localStorage.setItem(
-        "tempoUtilizado",
-        tempoUtilizado
-    );
-
-    // Vai para a tela de vitória
+    localStorage.setItem("tempoUtilizado", tempoUtilizado);
     window.location.href = "vitoria.html";
 }
 
@@ -365,16 +382,13 @@ function vitoria() {
 // ===============================
 
 function derrota(motivo) {
+    clearInterval(timer);
 
     tocarSom(somDerrota);
 
-    localStorage.setItem(
-        "motivoDerrota",
-        motivo
-    );
+    localStorage.setItem("motivoDerrota", motivo || "Três erros cometidos.");
 
-    window.location.href =
-        "derrota.html";
+    window.location.href = "derrota.html";
 }
 
 
@@ -382,8 +396,4 @@ function derrota(motivo) {
 // INICIAR AUTOMATICAMENTE
 // ===============================
 
-window.addEventListener("DOMContentLoaded", () => {
-
-    iniciarJogo();
-
-});
+window.addEventListener("DOMContentLoaded", iniciarJogo);

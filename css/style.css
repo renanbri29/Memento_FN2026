@@ -330,726 +330,6 @@ body {
     font-family:
         "Courier New",
         monospace;
-<<<<<<< HEAD
-=======
-
-    font-size:
-        clamp(80px, 10vw, 130px);
-
-    font-weight: bold;
-
-    text-shadow:
-        0 0 12px rgba(230, 202, 85, 0.35),
-        0 0 35px rgba(230, 202, 85, 0.12);
-
-    box-shadow:
-        inset 0 0 30px rgba(0, 0, 0, 0.9),
-        0 15px 40px rgba(0, 0, 0, 0.5);
-}
-
-
-/*Reflexo interno do display*/
-
-.display::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 8px;
-
-    border:
-        1px solid rgba(230, 202, 85, 0.12);
-
-    border-radius: 5px;
-
-    pointer-events: none;
-}
-
-
-/*Pequeno indicador superior*/
-
-.display::after {
-
-    content: "MEMORY INPUT";
-
-    position: absolute;
-
-    top: 12px;
-    left: 18px;
-
-    color: #555;
-
-    font-family: monospace;
-
-    font-size: 10px;
-
-    letter-spacing: 0.15em;
-}
-
-
-/*BOTÕES*/
-
-.buttons {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 18px;
-
-    margin-top: 35px;
-
-    position: relative;
-
-    z-index: 2;
-}
-
-
-.number-button {
-
-    width: 100px;
-
-    height: 95px;
-
-    border:
-        1px solid #3c3c3c;
-
-    border-radius: 8px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1b1b1b,
-            #090909
-        );
-
-    color: #ddd;
-
-    font-family:
-        "Courier New",
-        monospace;
-
-    font-size: 32px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 7px 0 #030303,
-        0 10px 20px rgba(0, 0, 0, 0.4);
-
-    transition:
-        transform .1s ease,
-        color .2s ease,
-        border-color .2s ease,
-        background .2s ease,
-        box-shadow .1s ease;
-}
-
-
-/* Hover */
-
-.number-button:hover {
-
-    color: #e6ca55;
-
-    border-color: #e6ca55;
-
-    background:
-        linear-gradient(
-            145deg,
-            #222015,
-            #0b0b0b
-        );
-
-    box-shadow:
-        0 7px 0 #030303,
-        0 0 20px rgba(230, 202, 85, 0.12);
-}
-
-
-/* Botão pressionado */
-
-.number-button:active {
-
-    transform:
-        translateY(7px);
-
-    box-shadow:
-        0 0 0 #030303;
-}
-
-
-/*INFORMAÇÕES DO JOGO*/
-
-.game-info {
-
-    width:
-        min(700px, 90vw);
-
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-top: 45px;
-
-    padding:
-        15px
-        20px;
-
-    border-top:
-        1px solid #292929;
-
-    border-bottom:
-        1px solid #292929;
-
-    color: #777;
-
-    font-family:
-        monospace;
-
-    font-size:
-        clamp(14px, 2vw, 18px);
-
-    letter-spacing: 0.08em;
-
-    position: relative;
-
-    z-index: 2;
-}
-
-
-/*Valores importantes ficam mais visíveis*/
-
-#fase,
-#timer,
-#erros {
-
-    white-space: nowrap;
-}
-
-
-/*TELAS DE RESULTADO*/
-
-.result-title {
-
-    font-size:
-        clamp(42px, 6vw, 70px);
-
-    margin-top: 12vh;
-}
-
-
-.highlight {
-
-    color: #e6ca55;
-
-    font-family: monospace;
-
-    font-size:
-        clamp(28px, 4vw, 48px);
-
-    margin-top: 60px;
-
-    text-shadow:
-        0 0 15px rgba(230, 202, 85, 0.2);
-}
-
-
-.result-text {
-
-    color: #aaa;
-
-    font-family: monospace;
-
-    font-size:
-        clamp(18px, 3vw, 28px);
-
-    margin-top: 15px;
-}
-
-
-/*PLAYERS / RANKING*/
-
-.players {
-
-    margin-top: 50px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 25px;
-
-    font-family: monospace;
-
-    font-size:
-        clamp(18px, 3vw, 28px);
-}
-
-
-.players label {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-}
-
-
-.players input {
-
-    width: 230px;
-
-    border: 0;
-
-    border-bottom:
-        1px solid #555;
-
-    outline: 0;
-
-    background:
-        transparent;
-
-    color: #fff;
-
-    font-family: monospace;
-
-    font-size: 20px;
-
-    padding:
-        8px
-        3px;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-
-.players input:focus {
-
-    border-color: #e6ca55;
-
-    box-shadow:
-        0 4px 10px rgba(230, 202, 85, 0.08);
-}
-
-
-.action {
-
-    margin-top: 60px;
-}
-
-
-/*DERROTA*/
-
-.reason {
-
-    color: #aaa;
-
-    font-family: monospace;
-
-    font-size:
-        clamp(18px, 3vw, 30px);
-
-    margin-top: 70px;
-
-    text-align: center;
-}
-
-
-.defeat-action {
-
-    margin-top: 100px;
-}
-
-
-/* =========================================================
-   RANKING
-   ========================================================= */
-
-.rank-title {
-
-    font-size:
-        clamp(42px, 6vw, 70px);
-
-    margin-top: 10vh;
-}
-
-
-.top10 {
-
-    margin-top: 50px;
-
-    width:
-        min(850px, 90vw);
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    column-gap: 80px;
-
-    row-gap: 10px;
-
-    font-family: monospace;
-
-    font-size:
-        clamp(16px, 2.4vw, 22px);
-}
-
-
-.top10 div {
-
-    padding:
-        10px
-        15px;
-
-    border-bottom:
-        1px solid #1e1e1e;
-
-    color: #888;
-}
-
-
-.top10 div:first-child {
-
-    color: #e6ca55;
-
-    border-color:
-        rgba(230, 202, 85, 0.3);
-}
-
-
-.rank-action {
-
-    margin-top: 40px;
-}
-
-
-/* =========================================================
-   ANIMAÇÕES
-   ========================================================= */
-
-
-/*
-   Pequena entrada do display
-*/
-
-.display {
-
-    animation:
-        displayAppear .5s ease;
-}
-
-
-@keyframes displayAppear {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            scale(.96);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            scale(1);
-
-    }
-}
-
-
-/*
-   Entrada dos botões
-*/
-
-.number-button {
-
-    animation:
-        buttonAppear .4s ease backwards;
-}
-
-
-.number-button:nth-child(1) {
-    animation-delay: .05s;
-}
-
-.number-button:nth-child(2) {
-    animation-delay: .10s;
-}
-
-.number-button:nth-child(3) {
-    animation-delay: .15s;
-}
-
-.number-button:nth-child(4) {
-    animation-delay: .20s;
-}
-
-
-@keyframes buttonAppear {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(10px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-
-    }
-}
-
-
-/* =========================================================
-   RESPONSIVIDADE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-    .screen {
-
-        padding:
-            20px
-            15px;
-    }
-
-
-    /* Menu */
-
-    .version {
-
-        top: 20px;
-
-        right: 20px;
-
-        font-size: 11px;
-    }
-
-
-    .title {
-
-        margin-top: 16vh;
-
-        font-size:
-            clamp(40px, 12vw, 65px);
-
-        letter-spacing:
-            0.15em;
-    }
-
-
-    .menu {
-
-        margin-top: 65px;
-
-        width: 100%;
-    }
-
-
-    .menu a,
-    .action {
-
-        width: 85vw;
-
-        max-width: 320px;
-
-        font-size: 17px;
-
-        padding:
-            14px
-            20px;
-    }
-
-
-    .footer {
-
-        width: 90vw;
-
-        bottom: 18px;
-
-        font-size: 10px;
-    }
-
-
-    /* Jogo */
-
-    .game-title {
-
-        margin-top: 35px;
-
-        font-size: 28px;
-
-        letter-spacing:
-            0.16em;
-    }
-
-
-    .display {
-
-        width: 85vw;
-
-        height: 190px;
-
-        min-width: 0;
-
-        min-height: 0;
-
-        margin-top: 35px;
-
-        font-size:
-            clamp(75px, 22vw, 110px);
-    }
-
-
-    .buttons {
-
-        width: 90vw;
-
-        max-width: 360px;
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 12px;
-
-        margin-top: 25px;
-    }
-
-
-    .number-button {
-
-        width: 100%;
-
-        height: 75px;
-
-        font-size: 27px;
-    }
-
-
-    .game-info {
-
-        width: 90vw;
-
-        margin-top: 35px;
-
-        padding:
-            12px
-            8px;
-
-        font-size: 12px;
-
-        gap: 8px;
-    }
-
-
-    /* Resultados */
-
-    .result-title {
-
-        margin-top: 10vh;
-
-        text-align: center;
-    }
-
-
-    .highlight {
-
-        margin-top: 40px;
-
-        text-align: center;
-    }
-
-
-    .result-text {
-
-        text-align: center;
-    }
-
-
-    .players {
-
-        font-size: 18px;
-    }
-
-
-    .players input {
-
-        width: 170px;
-
-        font-size: 17px;
-    }
-
-
-    /* Ranking */
-
-    .rank-title {
-
-        margin-top: 10vh;
-
-        text-align: center;
-    }
-
-
-    .top10 {
-
-        grid-template-columns: 1fr;
-
-        width: 90vw;
-
-        font-size: 16px;
-
-        row-gap: 5px;
-    }
-
-}
-
-
-/* =========================================================
-   TELAS MUITO PEQUENAS
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-    .display {
-
-        height: 160px;
-    }
-
-
-    .number-button {
-
-        height: 65px;
-
-        font-size: 24px;
-    }
-
-
-    .game-info {
-
-        font-size: 10px;
-    }
->>>>>>> 00d0f1745e39a0337a6c9f7005843d670944ac0e
 
     font-size:
         clamp(80px, 10vw, 130px);
@@ -1823,5 +1103,193 @@ body {
         gap: 8px;
         padding: 12px 8px;
         font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   MEMENTO — FEEDBACK E PROGRESSO
+   ========================================= */
+
+.game-screen {
+    isolation: isolate;
+}
+
+/* Progresso das fases */
+.phase-progress {
+    width: min(430px, 85vw);
+    margin-top: 28px;
+    position: relative;
+    z-index: 2;
+}
+
+.phase-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-family: monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: #777;
+}
+
+.phase-heading strong {
+    color: #e6ca55;
+    font-size: 16px;
+}
+
+.phase-track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+}
+
+.phase-segment {
+    height: 5px;
+    border-radius: 10px;
+    background: #292929;
+    transition: background .3s ease, box-shadow .3s ease;
+}
+
+.phase-segment.active {
+    background: #8d7935;
+}
+
+.phase-segment.current {
+    background: #e6ca55;
+    box-shadow: 0 0 12px rgba(230, 202, 85, .35);
+}
+
+/* Mensagem de feedback */
+.game-feedback {
+    width: min(560px, 90vw);
+    min-height: 28px;
+    margin-top: 22px;
+    margin-bottom: -20px;
+    text-align: center;
+    font-family: monospace;
+    font-size: clamp(12px, 1.5vw, 16px);
+    font-weight: bold;
+    letter-spacing: .12em;
+    color: #9b8b53;
+    position: relative;
+    z-index: 2;
+    transition: color .2s ease, text-shadow .2s ease;
+}
+
+.game-feedback.acerto {
+    color: #8fe0a1;
+    text-shadow: 0 0 14px rgba(90, 220, 120, .3);
+    animation: feedbackPop .3s ease;
+}
+
+.game-feedback.erro {
+    color: #ff7777;
+    text-shadow: 0 0 14px rgba(255, 60, 60, .3);
+    animation: feedbackShake .3s ease;
+}
+
+.game-feedback.reinicio {
+    color: #e6ca55;
+    text-shadow: 0 0 12px rgba(230, 202, 85, .2);
+    animation: feedbackPop .3s ease;
+}
+
+/* Número central: tamanho mais consistente no PC */
+#numero-display.display {
+    font-size: clamp(100px, 10vw, 150px) !important;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: border-color .2s ease, color .2s ease;
+}
+
+#numero-display.display.display-success {
+    border-color: #65bd79;
+    color: #9be8a9;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, .9),
+                0 0 24px rgba(80, 220, 110, .12);
+}
+
+#numero-display.display.display-error {
+    border-color: #bd5050;
+    color: #ff7777;
+    animation: displayShake .3s ease;
+}
+
+/* Botões bloqueados durante o feedback */
+.number-button:disabled {
+    cursor: wait;
+    opacity: .65;
+}
+
+@keyframes feedbackPop {
+    from {
+        opacity: .4;
+        transform: scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes feedbackShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+@keyframes displayShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+/* Ajustes para celulares */
+@media (max-width: 700px) {
+    .phase-progress {
+        margin-top: 24px;
+    }
+
+    .game-feedback {
+        margin-top: 18px;
+        margin-bottom: -18px;
+        min-height: 30px;
+        letter-spacing: .05em;
+    }
+
+    #numero-display.display {
+        font-size: clamp(75px, 22vw, 110px) !important;
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 380px) {
+    .phase-heading {
+        font-size: 11px;
+    }
+
+    .phase-heading strong {
+        font-size: 14px;
+    }
+
+    .game-feedback {
+        font-size: 11px;
+    }
+
+    #numero-display.display {
+        font-size: 75px !important;
+    }
+}
+
+/* Respeitar preferência por menos animação */
+@media (prefers-reduced-motion: reduce) {
+    .game-feedback,
+    #numero-display.display,
+    .phase-segment {
+        animation: none !important;
+        transition: none !important;
     }
 }
